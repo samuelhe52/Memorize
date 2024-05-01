@@ -66,14 +66,11 @@ struct CardView: View {
     
     var body: some View {
         ZStack {
-            let base = RoundedRectangle(cornerRadius: 13)
-            Group {
-                base.foregroundStyle(.white)
-                base.strokeBorder(lineWidth: 3)
-                Text(content).font(.largeTitle)
-            }
-            .opacity(isFaceUp ? 1 : 0)
-            base.fill().opacity(isFaceUp ? 0 : 1)
+            let base = RoundedRectangle(cornerRadius: 15)
+            base.strokeBorder(lineWidth: 3)
+            Text(content).font(.largeTitle)
+            base.foregroundStyle(.orange)
+                .opacity(isFaceUp ? 0 : 1)
         }
         .onTapGesture {
             isFaceUp.toggle()
