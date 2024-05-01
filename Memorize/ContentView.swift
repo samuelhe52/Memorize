@@ -10,21 +10,43 @@ import SwiftUI
 struct ContentView: View {
     let emojis: [String] = ["👻", "🎃", "💀", "🕷️", "👿", "🕸️", "🪼", "🐙", "😱", "🍭", "🧙", "🙀"]
 
-    @State var cardCount = 4
+    @State var cardCount: Int = 4
     
     var body: some View {
         VStack {
-            ForEach(0..<5) { _ in
-                HStack {
-                    ForEach(0..<4) { _ in
-                        CardView(content: emojis.randomElement()!)
-                    }
+            HStack {
+                ForEach(0..<cardCount, id: \.self) { _ in
+                    CardView(content: emojis.randomElement()!)
                 }
-                .padding()
+            }        
+            .foregroundStyle(.orange)
+            
+            HStack {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 10)
+                        .frame(width: 120, height: 30, alignment: .center)
+                    Button("Add Card") {
+                        if cardCount <= 9 {
+                            cardCount += 1
+                        }
+                    }
+                    .foregroundStyle(.white)
+                }
+                Spacer()
+                ZStack {
+                    RoundedRectangle(cornerRadius: 10)
+                        .frame(width: 120, height: 30, alignment: .center)
+                    Button("Remove Card") {
+                        if cardCount >= 2 {
+                            cardCount -= 1
+                        }
+                    }
+                    .foregroundStyle(.white)
+                }
             }
+            .foregroundStyle(.cyan)
         }
         .padding()
-        .foregroundStyle(.orange)
     }
 }
 
