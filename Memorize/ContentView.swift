@@ -7,13 +7,20 @@
 
 import SwiftUI
 
-struct ContentView: View {
-    let emojis: [String] = ["👻", "🎃", "💀", "🕷️", "👿", "🕸️", "🐊", "🐙", "😱", "🍭", "🧙", "🙀"]
+let halloweenTheme: [String] = ["👻", "🎃", "💀", "🕷️", "👿", "🕸️", "🐊", "🐙", "😱", "🍭", "🧙", "🙀"]
+let animalTheme: [String] = ["🐶", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼", "🐻‍❄️", "🐯", "🦁", "🐮", "🐷"]
+let digitalTheme: [String] = ["⌚️", "📱", "💻", "⌨️", "🖥️", "🖨️", "💿", "💾", "📷", "☎️", "📺", "📡"]
 
+struct ContentView: View {
+    @State var currentTheme: [String] = halloweenTheme
     @State var cardCount: Int = 5
     
     var body: some View {
         VStack {
+            Text("Memorize!")
+                .font(.largeTitle)
+                .foregroundStyle(.linearGradient(colors: [.pink, .purple, .blue], startPoint: .topLeading, endPoint: .bottomTrailing))
+            themeModifiers
             ScrollView {
                 cards
             }
@@ -26,7 +33,7 @@ struct ContentView: View {
     var cards: some View {
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 80))]) {
             ForEach(0..<cardCount, id: \.self) { index in
-                CardView(content: emojis[index])
+                CardView(content: currentTheme[index])
                     .aspectRatio(2/3, contentMode: .fit)
             }
         }
@@ -42,13 +49,30 @@ struct ContentView: View {
         .imageScale(.large)
     }
     
+    var themeModifiers: some View {
+        VStack {
+            Text("Choose your theme here")
+            HStack {
+                Button("Halloween") {
+                    currentTheme = halloweenTheme
+                }
+                Button("Animal") {
+                    currentTheme = animalTheme
+                }
+                Button("Digital") {
+                    currentTheme = digitalTheme
+                }
+            }
+        }
+    }
+    
     func cardCountModifier(by offset: Int, symbol: String) -> some View {
         Button(action: {
             cardCount += offset
         }, label: {
             Image(systemName: symbol)
         })
-        .disabled(cardCount + offset < 1 || cardCount + offset > emojis.count)
+        .disabled(cardCount + offset < 1 || cardCount + offset > currentTheme.count)
     }
     
     var cardRemover: some View {
