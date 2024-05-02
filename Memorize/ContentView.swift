@@ -36,7 +36,7 @@ struct ContentView: View {
     
     var cards: some View {
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 80))]) {
-            ForEach(0..<currentTheme.count, id: \.self) { index in
+            ForEach(currentTheme.indices, id: \.self) { index in
                 CardView(content: currentTheme[index])
                     .aspectRatio(2/3, contentMode: .fit)
             }
