@@ -9,14 +9,19 @@ import Foundation
 
 struct MemoryGame<CardContent> {
     private(set) var cards: [Card]
-    
-    init(numberOfPairsOfCards: Int, cardContentFactory: (Int) -> CardContent) {
-        cards = []
+    private static func generateCards(numberOfPairsOfCards: Int, cardContentFactory: (Int) -> CardContent) -> [Card] {
+        var tmpCards: [Card] = []
         for pairIndex in 0..<max(2, numberOfPairsOfCards) {
             let content = cardContentFactory(pairIndex)
-            cards.append(Card(content: content))
-            cards.append(Card(content: content))
+            tmpCards.append(Card(content: content))
+            tmpCards.append(Card(content: content))
         }
+        
+        return tmpCards
+    }
+
+    init(numberOfPairsOfCards number: Int, cardContentFactory: (Int) -> CardContent) {
+        cards = MemoryGame<CardContent>.generateCards(numberOfPairsOfCards: number, cardContentFactory: cardContentFactory)
     }
     
     func chooseCard(card: Card) {
@@ -25,6 +30,10 @@ struct MemoryGame<CardContent> {
     
     mutating func shuffleCards() {
         cards.shuffle()
+    }
+    
+    mutating func changeTheme(numberOfPairsOfCards number: Int, cardContentFactory: (Int) -> CardContent) {
+        cards = MemoryGame<CardContent>.generateCards(numberOfPairsOfCards: number, cardContentFactory: cardContentFactory)
     }
     
     struct Card {

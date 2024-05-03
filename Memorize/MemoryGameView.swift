@@ -8,24 +8,21 @@
 import SwiftUI
 
 struct MemoryGameView: View {
-    var emojiMemoryGame: EmojiMemoryGame = EmojiMemoryGame()
-    
-//    @State var currentTheme: [String] = EmojiMemoryGame.halloweenTheme.flatMap { [$0, $0] }.shuffled()
-//    @State var currentColor: Color = .cyan
-    
+    @ObservedObject var emojiMemoryGameViewModel: EmojiMemoryGameViewModel 
+    // Never use a default value, always pass in the ViewModel into View, for if it were given a default value, then the ViewModel could no longer be shared among other Views, which defeats the purpose of creating a class for the ViewModel.
+        
     var body: some View {
         VStack {
             title
             Spacer(minLength: 20)
             ScrollView {
-                cards.foregroundStyle(.purple)
+                cards.foregroundStyle(emojiMemoryGameViewModel.currentColor)
             }
-            Button("Shuffle") {
-                emojiMemoryGame.shuffle()
-            }
-//            themeModifiers
+            shuffler
+            Spacer()
+            themeModifiers
         }
-        .padding()
+        .padding([.top, .horizontal])
     }
     
     var title: some View {
@@ -36,42 +33,48 @@ struct MemoryGameView: View {
     
     var cards: some View {
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 80), spacing: 0)], spacing: 0) {
-            ForEach(emojiMemoryGame.cards.indices, id: \.self) { index in
-                CardView(emojiMemoryGame.cards[index])
+            ForEach(emojiMemoryGameViewModel.cards.indices, id: \.self) { index in
+                CardView(emojiMemoryGameViewModel.cards[index])
                     .aspectRatio(2/3, contentMode: .fit)
                     .padding(4)
             }
         }
     }
-//    
-//    var themeModifiers: some View {
-//        HStack(alignment: .lastTextBaseline, spacing: 35) {
-//            themeModifier(to: "Animal", symbol: "pawprint")
-//            themeModifier(to: "Halloween", symbol: "ant")
-//            themeModifier(to: "Digital", symbol: "pc")
-//        }
-//    }
-//    
-//    func themeProcessor(_ theme: [String]) -> [String] {
-//        return (theme + theme).shuffled()
-//    }
-//    
-//    func themeModifier(to theme: String, symbol: String) -> some View {
-//        let themeEmojis = themeProcessor(availableThemes[theme]?.1 ?? halloweenTheme)
-//        let themeColor = availableThemes[theme]?.0 ?? .purple
-//        return VStack {
-//            Button(action: {
-//                currentTheme = themeEmojis
-//                currentColor = themeColor
-//            }, label: {
-//                Image(systemName: symbol)
-//                    .font(.title2)
-//            })
-//            Text(theme)
-//                .font(.footnote)
-//        }
-//        .foregroundStyle(themeColor)
-//    }
+    
+    var shuffler: some View {
+        Button(action: {
+            emojiMemoryGameViewModel.shuffleCards()
+        }, label: {
+            VStack {
+                Image(systemName: "square.3.stack.3d.middle.fill")
+                    .font(.title2)
+                Text("Shuffle")
+            }
+        })
+        .foregroundStyle(.cyan)
+    }
+    
+    var themeModifiers: some View {
+        HStack(alignment: .lastTextBaseline, spacing: 35) {
+            themeModifier(to: "Animal", symbol: "pawprint")
+            themeModifier(to: "Halloween", symbol: "ant")
+            themeModifier(to: "Digital", symbol: "pc")
+        }
+    }
+    
+    func themeModifier(to theme: String, symbol: String) -> some View {
+        return VStack {
+            Button(action: {
+                emojiMemoryGameViewModel.changeTheme(to: theme)
+            }, label: {
+                Image(systemName: symbol)
+                    .font(.title2)
+            })
+            Text(theme)
+                .font(.footnote)
+        }
+        .foregroundStyle(EmojiMemoryGameViewModel.availableThemes[theme]?.0 ?? .purple)
+    }
 }
 
 struct CardView: View {
@@ -95,5 +98,5 @@ struct CardView: View {
 }
 
 #Preview {
-    MemoryGameView()
+    MemoryGameView(emojiMemoryGameViewModel: EmojiMemoryGameViewModel())
 }

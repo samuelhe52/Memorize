@@ -1,5 +1,5 @@
 //
-//  EmojiMemorizeGame.swift
+//  EmojiMemoryGameViewModel.swift
 //  Memorize
 //
 //  Created by Samuel He on 2024/5/2.
@@ -7,19 +7,27 @@
 
 import SwiftUI
 
-class EmojiMemoryGameViewModel {
-    private static let halloweenTheme: [String] = ["👻", "🎃", "💀", "🕷️", "👿", "🕸️","🐙", "🐍", "😵", "🙀"]
-    private static let animalTheme: [String] = ["🐶", "🐭", "🐹", "🐰", "🦊", "🐻"]
-    private static let digitalTheme: [String] = ["⌚️", "📱", "💻", "⌨️", "🖥️", "🖨️"]
-    private static let availableThemes: [String: (Color, [String])] = ["Halloween": (.purple, halloweenTheme), "Animal": (.pink, animalTheme), "Digital": (.blue, digitalTheme)]
+class EmojiMemoryGameViewModel: ObservableObject {
+    private static let halloweenTheme: [String] = ["👻", "🎃", "💀", "🕷️", "👿", "🕸️","🐙", "🐍", "😵", "🙀", "🍬", "🧺"]
+    private static let animalTheme: [String] = ["🐶", "🐭", "🐹", "🐰", "🦊", "🐻", "🐻‍❄️", "🐨", "🦁", "🐮", "🐷", "🐵"]
+    private static let digitalTheme: [String] = ["⌚️", "📱", "💻", "⌨️", "🖥️", "🖨️", "⏰", "🎙️", "📺", "📽️", "📻", "🧭"]
+    static let availableThemes: [String: (Color, [String])] = ["Halloween": (.purple, halloweenTheme), "Animal": (.pink, animalTheme), "Digital": (.blue, digitalTheme)]
+        
+    @Published private var memoryGame = makeMemoryGame()
     
-    private var memoryGame = MemoryGame(numberOfPairsOfCards: 6) { pairIndex in
-        if halloweenTheme.indices.contains(pairIndex) {
-            return halloweenTheme[pairIndex]
-        } else {
-            return "❌"
+    private static func makeMemoryGame(memoryGameTheme theme: String = "Halloween") -> MemoryGame<String> {
+        let themeEmojis = availableThemes[theme]?.1 ?? halloweenTheme
+        
+        return MemoryGame(numberOfPairsOfCards: themeEmojis.count) { pairIndex in
+            if themeEmojis.indices.contains(pairIndex) {
+                return themeEmojis[pairIndex]
+            } else {
+                return "❌"
+            }
         }
     }
+    
+    var currentColor: Color = .purple
     
     var cards: Array<MemoryGame<String>.Card> {
         return memoryGame.cards
@@ -31,7 +39,22 @@ class EmojiMemoryGameViewModel {
         memoryGame.chooseCard(card: card)
     }
     
-    func shuffle() {
+    func shuffleCards() {
         memoryGame.shuffleCards()
+    }
+    
+    func changeTheme(to theme: String) {
+        let themeEmojis = EmojiMemoryGameViewModel.availableThemes[theme]?.1 ?? EmojiMemoryGameViewModel.halloweenTheme
+        
+        func makeCardContent(pairIndex: Int) -> String {
+            if themeEmojis.indices.contains(pairIndex) {
+                return themeEmojis[pairIndex]
+            } else {
+                return "❌"
+            }
+        }
+        
+        currentColor = EmojiMemoryGameViewModel.availableThemes[theme]?.0 ?? .purple
+        memoryGame.changeTheme(numberOfPairsOfCards: themeEmojis.count, cardContentFactory: makeCardContent)
     }
 }
