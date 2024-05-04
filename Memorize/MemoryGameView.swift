@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MemoryGameView: View {
     @ObservedObject var emojiMemoryGameViewModel: EmojiMemoryGameViewModel 
-    // Never use a default value, always pass in the ViewModel into View, for if it were given a default value, then the ViewModel could no longer be shared among other Views, which defeats the purpose of creating a class for the ViewModel.
+    // Never use a default value, always pass in the ViewModel into View, for if it were given a default value, then the ViewModel could no longer be shared among other Views, which is contrary to our original intention.
         
     var body: some View {
         VStack {
@@ -18,11 +18,13 @@ struct MemoryGameView: View {
             ScrollView {
                 cards.foregroundStyle(emojiMemoryGameViewModel.currentColor)
             }
-            shuffler
-            Spacer()
-            themeModifiers
+            HStack(alignment: .lastTextBaseline) {
+                themeModifiers
+                Divider().frame(height: 40)
+                shuffler
+            }
         }
-        .padding([.top, .horizontal])
+        .padding()
     }
     
     var title: some View {
@@ -49,9 +51,11 @@ struct MemoryGameView: View {
                 Image(systemName: "square.3.stack.3d.middle.fill")
                     .font(.title2)
                 Text("Shuffle")
+                    .font(.footnote)
             }
         })
-        .foregroundStyle(.cyan)
+        .foregroundStyle(emojiMemoryGameViewModel.currentColor)
+        .padding(.leading)
     }
     
     var themeModifiers: some View {
@@ -60,6 +64,7 @@ struct MemoryGameView: View {
             themeModifier(to: "Halloween", symbol: "ant")
             themeModifier(to: "Digital", symbol: "pc")
         }
+        .padding(.trailing)
     }
     
     func themeModifier(to theme: String, symbol: String) -> some View {
@@ -91,7 +96,7 @@ struct CardView: View {
             Text(card.content)
                 .font(.system(size: 200))
                 .minimumScaleFactor(0.01)
-                .aspectRatio(1, contentMode: .fit)
+                .aspectRatio(4/3, contentMode: .fit)
             base.opacity(card.isFaceUp ? 0 : 1)
         }
     }
