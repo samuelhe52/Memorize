@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class EmojiMemoryGameViewModel: ObservableObject {
+class EmojiMemoryGame: ObservableObject {
     private static let halloweenTheme: [String] = ["👻", "🎃", "💀", "🕷️", "👿", "🕸️","🐙", "🐍", "😵", "🙀", "🍬", "🧺"]
     private static let animalTheme: [String] = ["🐶", "🐭", "🐹", "🐰", "🦊", "🐻", "🐻‍❄️", "🐨", "🦁", "🐮", "🐷", "🐵"]
     private static let digitalTheme: [String] = ["⌚️", "📱", "💻", "⌨️", "🖥️", "🖨️", "⏰", "🎙️", "📺", "📽️", "📻", "🧭"]
@@ -44,7 +44,7 @@ class EmojiMemoryGameViewModel: ObservableObject {
     }
     
     func changeTheme(to theme: String) {
-        let themeEmojis = EmojiMemoryGameViewModel.availableThemes[theme]?.1 ?? EmojiMemoryGameViewModel.halloweenTheme
+        let themeEmojis = EmojiMemoryGame.availableThemes[theme]?.1 ?? EmojiMemoryGame.halloweenTheme
         
         func makeCardContent(pairIndex: Int) -> String {
             if themeEmojis.indices.contains(pairIndex) {
@@ -54,7 +54,7 @@ class EmojiMemoryGameViewModel: ObservableObject {
             }
         }
         
-        currentColor = EmojiMemoryGameViewModel.availableThemes[theme]?.0 ?? .purple
+        currentColor = EmojiMemoryGame.availableThemes[theme]?.0 ?? .purple
         memoryGame.changeTheme(numberOfPairsOfCards: themeEmojis.count, cardContentFactory: makeCardContent)
     }
 }

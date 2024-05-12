@@ -7,14 +7,14 @@
 
 import Foundation
 
-struct MemoryGame<CardContent> {
+struct MemoryGame<CardContent: Equatable> {
     private(set) var cards: [Card]
     private static func generateCards(numberOfPairsOfCards: Int, cardContentFactory: (Int) -> CardContent) -> [Card] {
         var tmpCards: [Card] = []
         for pairIndex in 0..<max(2, numberOfPairsOfCards) {
             let content = cardContentFactory(pairIndex)
-            tmpCards.append(Card(content: content))
-            tmpCards.append(Card(content: content))
+            tmpCards.append(Card(content: content, id: "\(pairIndex + 1)a"))
+            tmpCards.append(Card(content: content, id: "\(pairIndex + 1)b"))
         }
         
         return tmpCards
@@ -36,9 +36,11 @@ struct MemoryGame<CardContent> {
         cards = MemoryGame<CardContent>.generateCards(numberOfPairsOfCards: number, cardContentFactory: cardContentFactory)
     }
     
-    struct Card {
+    struct Card: Equatable, Identifiable {
         var isFaceUp = true
         var isMatched = false
         let content: CardContent
+        
+        var id: String
     }
 }

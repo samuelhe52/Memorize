@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MemoryGameView: View {
-    @ObservedObject var emojiMemoryGameViewModel: EmojiMemoryGameViewModel 
+    @ObservedObject var emojiMemoryGame: EmojiMemoryGame
     // Never use a default value, always pass in the ViewModel into View, for if it were given a default value, then the ViewModel could no longer be shared among other Views, which is contrary to our original intention.
         
     var body: some View {
@@ -16,7 +16,9 @@ struct MemoryGameView: View {
             title
             Spacer(minLength: 20)
             ScrollView {
-                cards.foregroundStyle(emojiMemoryGameViewModel.currentColor)
+                cards
+                    .foregroundStyle(emojiMemoryGame.currentColor)
+                    .animation(.default, value: emojiMemoryGame.cards)
             }
             HStack(alignment: .lastTextBaseline) {
                 themeModifiers
@@ -35,17 +37,20 @@ struct MemoryGameView: View {
     
     var cards: some View {
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 80), spacing: 0)], spacing: 0) {
-            ForEach(emojiMemoryGameViewModel.cards.indices, id: \.self) { index in
-                CardView(emojiMemoryGameViewModel.cards[index])
-                    .aspectRatio(2/3, contentMode: .fit)
-                    .padding(4)
+            ForEach(emojiMemoryGame.cards) { card in
+                VStack(spacing: 0) {
+                    CardView(card)
+                        .aspectRatio(2/3, contentMode: .fit)
+                        .padding(4)
+                    Text(card.id)
+                }
             }
         }
     }
     
     var shuffler: some View {
         Button(action: {
-            emojiMemoryGameViewModel.shuffleCards()
+            emojiMemoryGame.shuffleCards()
         }, label: {
             VStack {
                 Image(systemName: "square.3.stack.3d.middle.fill")
@@ -54,7 +59,7 @@ struct MemoryGameView: View {
                     .font(.footnote)
             }
         })
-        .foregroundStyle(emojiMemoryGameViewModel.currentColor)
+        .foregroundStyle(emojiMemoryGame.currentColor)
         .padding(.leading)
     }
     
@@ -70,7 +75,7 @@ struct MemoryGameView: View {
     func themeModifier(to theme: String, symbol: String) -> some View {
         return VStack {
             Button(action: {
-                emojiMemoryGameViewModel.changeTheme(to: theme)
+                emojiMemoryGame.changeTheme(to: theme)
             }, label: {
                 Image(systemName: symbol)
                     .font(.title2)
@@ -78,7 +83,7 @@ struct MemoryGameView: View {
             Text(theme)
                 .font(.footnote)
         }
-        .foregroundStyle(EmojiMemoryGameViewModel.availableThemes[theme]?.0 ?? .purple)
+        .foregroundStyle(EmojiMemoryGame.availableThemes[theme]?.0 ?? .purple)
     }
 }
 
@@ -103,5 +108,5 @@ struct CardView: View {
 }
 
 #Preview {
-    MemoryGameView(emojiMemoryGameViewModel: EmojiMemoryGameViewModel())
+    MemoryGameView(emojiMemoryGame: EmojiMemoryGame())
 }
