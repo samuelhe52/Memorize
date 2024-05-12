@@ -42,7 +42,7 @@ struct MemoryGameView: View {
                     CardView(card)
                         .aspectRatio(2/3, contentMode: .fit)
                         .padding(4)
-                    Text(card.id)
+                    Text(card.id.description)
                 }
             }
         }

@@ -13,8 +13,8 @@ struct MemoryGame<CardContent: Equatable> {
         var tmpCards: [Card] = []
         for pairIndex in 0..<max(2, numberOfPairsOfCards) {
             let content = cardContentFactory(pairIndex)
-            tmpCards.append(Card(content: content, id: "\(pairIndex + 1)a"))
-            tmpCards.append(Card(content: content, id: "\(pairIndex + 1)b"))
+            tmpCards.append(Card(content: content, id: CardID(description: "\(pairIndex + 1)a")))
+            tmpCards.append(Card(content: content, id: CardID(description: "\(pairIndex + 1)b")))
         }
         
         return tmpCards
@@ -41,6 +41,11 @@ struct MemoryGame<CardContent: Equatable> {
         var isMatched = false
         let content: CardContent
         
-        var id: String
+        var id: CardID
+    }
+    
+    struct CardID: Hashable {
+        let uuid = UUID()
+        var description: String
     }
 }
