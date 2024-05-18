@@ -24,26 +24,33 @@ struct MemoryGame<CardContent: Equatable> {
         cards = MemoryGame<CardContent>.generateCards(numberOfPairsOfCards: number, cardContentFactory: cardContentFactory)
     }
     
-    var indexOfTheOneAndOnlyFaceUpCard: Int? {
+    var theOneAndOnlyFaceUpCardIndex: Int? {
         get { return cards.indices.filter { cards[$0].isFaceUp }.only }
         set { cards.indices.forEach { cards[$0].isFaceUp = (newValue == $0) } }
     }
     
     mutating func chooseCard(_ card: Card) {
-        if let chosenIndex = cards.firstIndex(where: { $0.id == card.id }) {
-            if !cards[chosenIndex].isFaceUp && !cards[chosenIndex].isMatched {
-                if let potentialMatchIndex = indexOfTheOneAndOnlyFaceUpCard {
-                    if cards[chosenIndex].content == cards[potentialMatchIndex].content {
-                        cards[chosenIndex].isMatched = true
+//        print("----------------------------------------")
+//        print(theOneAndOnlyFaceUpCardIndex)
+        if let chosenCardIndex = cards.firstIndex(where: { $0.id == card.id }) {
+            if !cards[chosenCardIndex].isFaceUp && !cards[chosenCardIndex].isMatched {
+                if let potentialMatchIndex = theOneAndOnlyFaceUpCardIndex {
+                    if cards[chosenCardIndex].content == cards[potentialMatchIndex].content {
+                        cards[chosenCardIndex].isMatched = true
                         cards[potentialMatchIndex].isMatched = true
-                        print("Matched: \"\(cards[chosenIndex])\" and \"\(cards[potentialMatchIndex])\"")
+                        print("Matched: \"\(cards[chosenCardIndex])\" and \"\(cards[potentialMatchIndex])\"")
+                    } else {
+                        print("Match failed: \"\(cards[chosenCardIndex])\" and \"\(cards[potentialMatchIndex])\"")
                     }
                 } else {
-                    indexOfTheOneAndOnlyFaceUpCard = chosenIndex
+                    theOneAndOnlyFaceUpCardIndex = chosenCardIndex
                 }
-                cards[chosenIndex].isFaceUp = true
+                cards[chosenCardIndex].isFaceUp = true
             }
         }
+//        print(theOneAndOnlyFaceUpCardIndex)
+//        print("----------------------------------------")
+
     }
     
     mutating func shuffleCards() {
@@ -74,6 +81,6 @@ struct MemoryGame<CardContent: Equatable> {
 
 extension Array {
     var only: Element? {
-        count == 1 ? first : nil
+        self.count == 1 ? self.first : nil
     }
 }
