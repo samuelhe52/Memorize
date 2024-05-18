@@ -35,8 +35,8 @@ class EmojiMemoryGame: ObservableObject {
     
     // MARK: - Intent
     
-    func choose(card: MemoryGame<String>.Card) {
-        memoryGame.chooseCard(card: card)
+    func choose(_ card: MemoryGame<String>.Card) {
+        memoryGame.chooseCard(card)
     }
     
     func shuffleCards() {
@@ -56,5 +56,7 @@ class EmojiMemoryGame: ObservableObject {
         
         currentColor = EmojiMemoryGame.availableThemes[theme]?.0 ?? .purple
         memoryGame.changeTheme(numberOfPairsOfCards: themeEmojis.count, cardContentFactory: makeCardContent)
+        
+        print("Theme changed: \(theme)")
     }
 }

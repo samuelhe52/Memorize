@@ -18,12 +18,14 @@ struct MemoryGameView: View {
             ScrollView {
                 cards
                     .foregroundStyle(emojiMemoryGame.currentColor)
-                    .animation(.default, value: emojiMemoryGame.cards)
+                    .animation(.spring(duration: 0.4), value: emojiMemoryGame.cards)
+//                    .animation(.default, value: emojiMemoryGame.cards)
             }
             HStack(alignment: .lastTextBaseline) {
                 themeModifiers
                 Divider().frame(height: 40)
                 shuffler
+                    .animation(.default, value: emojiMemoryGame.currentColor)
             }
         }
         .padding()
@@ -38,12 +40,12 @@ struct MemoryGameView: View {
     var cards: some View {
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 80), spacing: 0)], spacing: 0) {
             ForEach(emojiMemoryGame.cards) { card in
-                VStack(spacing: 0) {
-                    CardView(card)
-                        .aspectRatio(2/3, contentMode: .fit)
-                        .padding(4)
-                    Text(card.id.description)
-                }
+                CardView(card)
+                    .aspectRatio(2/3, contentMode: .fit)
+                    .padding(4)
+                    .onTapGesture {
+                        emojiMemoryGame.choose(card)
+                    }
             }
         }
     }
@@ -104,6 +106,10 @@ struct CardView: View {
                 .aspectRatio(4/3, contentMode: .fit)
             base.opacity(card.isFaceUp ? 0 : 1)
         }
+//        .opacity(card.isFaceUp || !card.isMatched ? 1 : 0)
+        .opacity(card.isMatched ? 0 : 1)
+        .animation(.easeInOut(duration: 0.5), value: card.isMatched)
+        .animation(.easeInOut(duration: 0.25), value: card.isFaceUp)
     }
 }
 
