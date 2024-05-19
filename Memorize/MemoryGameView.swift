@@ -23,7 +23,7 @@ struct MemoryGameView: View {
             HStack(alignment: .lastTextBaseline) {
                 themeModifiers
                 Divider().frame(height: 40)
-                shuffler
+                newGame
                     .animation(.default, value: emojiMemoryGame.currentColor)
             }
         }
@@ -62,6 +62,19 @@ struct MemoryGameView: View {
         })
         .foregroundStyle(emojiMemoryGame.currentColor)
         .padding(.leading)
+    }
+    
+    var newGame: some View {
+        Button(action: {
+            emojiMemoryGame.startNewGame()
+        }, label: {
+            VStack {
+                Image(systemName: "plus.circle")
+                    .font(.title2)
+                Text("New Game")
+                    .font(.footnote)
+            }
+        })
     }
     
     var themeModifiers: some View {
@@ -107,7 +120,7 @@ struct CardView: View {
         }
         .opacity(card.isMatched ? 0 : 1)
         .animation(.easeInOut(duration: 0.5), value: card.isMatched)
-        .animation(.easeInOut(duration: 0.25), value: card.isFaceUp)
+        .animation(.easeInOut(duration: 0.2), value: card.isFaceUp)
     }
 }
 

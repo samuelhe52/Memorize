@@ -62,6 +62,11 @@ struct MemoryGame<CardContent: Equatable> {
         cards = MemoryGame<CardContent>.generateCards(numberOfPairsOfCards: number, cardContentFactory: cardContentFactory)
     }
     
+    mutating func startNewGame() {
+        cards.indices.forEach { cards[$0].resetCardState() }
+        cards.shuffle()
+    }
+    
     struct Card: Equatable, Identifiable, CustomDebugStringConvertible {
         var isFaceUp = false
         var isMatched = false
@@ -70,6 +75,11 @@ struct MemoryGame<CardContent: Equatable> {
         var id: CardID
         var debugDescription: String {
             return "\(id.description): \(content) \(isFaceUp ? "up" : "down") \(isMatched ? "matched" : "not matched")"
+        }
+        
+        mutating func resetCardState() {
+            self.isFaceUp = false
+            self.isMatched = false
         }
     }
     

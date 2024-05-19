@@ -43,11 +43,14 @@ class EmojiMemoryGame: ObservableObject {
     }
     
     private static let defaultTheme = EmojiMemoryGameTheme.halloween
+    
+    private static let defaultCardCount = 8
         
     private static func makeMemoryGame(memoryGameTheme theme: EmojiMemoryGameTheme = defaultTheme) -> MemoryGame<String> {
         let themeEmojis = theme.emojis
         
-        return MemoryGame(numberOfPairsOfCards: themeEmojis.count) { pairIndex in
+//        return MemoryGame(numberOfPairsOfCards: themeEmojis.count) { pairIndex in
+        return MemoryGame(numberOfPairsOfCards: defaultCardCount) { pairIndex in
             if themeEmojis.indices.contains(pairIndex) {
                 return themeEmojis[pairIndex]
             } else {
@@ -74,6 +77,10 @@ class EmojiMemoryGame: ObservableObject {
         memoryGame.shuffleCards()
     }
     
+    func startNewGame() {
+        memoryGame.startNewGame()
+    }
+    
     func changeTheme(to theme: EmojiMemoryGameTheme) {
         let themeEmojis = theme.emojis
         
@@ -86,7 +93,7 @@ class EmojiMemoryGame: ObservableObject {
         }
         
         currentColor = theme.accentColor
-        memoryGame.changeTheme(numberOfPairsOfCards: themeEmojis.count, cardContentFactory: makeCardContent)
+        memoryGame.changeTheme(numberOfPairsOfCards: EmojiMemoryGame.defaultCardCount, cardContentFactory: makeCardContent)
         
         print("Theme changed: \(theme)")
     }
