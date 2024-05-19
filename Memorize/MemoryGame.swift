@@ -17,7 +17,7 @@ struct MemoryGame<CardContent: Equatable> {
             tmpCards.append(Card(content: content, id: CardID(description: "\(pairIndex + 1)b")))
         }
         
-        return tmpCards
+        return tmpCards.shuffled()
     }
     
     init(numberOfPairsOfCards number: Int, cardContentFactory: (Int) -> CardContent) {

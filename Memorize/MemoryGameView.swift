@@ -19,7 +19,6 @@ struct MemoryGameView: View {
                 cards
                     .foregroundStyle(emojiMemoryGame.currentColor)
                     .animation(.spring(duration: 0.4), value: emojiMemoryGame.cards)
-//                    .animation(.default, value: emojiMemoryGame.cards)
             }
             HStack(alignment: .lastTextBaseline) {
                 themeModifiers
@@ -106,7 +105,6 @@ struct CardView: View {
                 .aspectRatio(4/3, contentMode: .fit)
             base.opacity(card.isFaceUp ? 0 : 1)
         }
-//        .opacity(card.isFaceUp || !card.isMatched ? 1 : 0)
         .opacity(card.isMatched ? 0 : 1)
         .animation(.easeInOut(duration: 0.5), value: card.isMatched)
         .animation(.easeInOut(duration: 0.25), value: card.isFaceUp)

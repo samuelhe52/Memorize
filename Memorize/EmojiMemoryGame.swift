@@ -43,11 +43,7 @@ class EmojiMemoryGame: ObservableObject {
     }
     
     private static let defaultTheme = EmojiMemoryGameTheme.halloween
-    
-//    static let availableThemes: [String: (Color, [String])] = ["Halloween": (.purple, halloweenTheme), "Animal": (.pink, animalTheme), "Digital": (.blue, digitalTheme)]
         
-    @Published private var memoryGame = makeMemoryGame()
-    
     private static func makeMemoryGame(memoryGameTheme theme: EmojiMemoryGameTheme = defaultTheme) -> MemoryGame<String> {
         let themeEmojis = theme.emojis
         
@@ -59,6 +55,8 @@ class EmojiMemoryGame: ObservableObject {
             }
         }
     }
+    
+    @Published private var memoryGame = makeMemoryGame()
     
     var currentColor: Color = defaultTheme.accentColor
     
