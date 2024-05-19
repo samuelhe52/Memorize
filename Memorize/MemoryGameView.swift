@@ -67,14 +67,14 @@ struct MemoryGameView: View {
     
     var themeModifiers: some View {
         HStack(alignment: .lastTextBaseline, spacing: 35) {
-            themeModifier(to: "Animal", symbol: "pawprint")
-            themeModifier(to: "Halloween", symbol: "ant")
-            themeModifier(to: "Digital", symbol: "pc")
+            themeModifier(to: .animal, symbol: "pawprint")
+            themeModifier(to: .halloween, symbol: "ant")
+            themeModifier(to: .digital, symbol: "pc")
         }
         .padding(.trailing)
     }
     
-    func themeModifier(to theme: String, symbol: String) -> some View {
+    func themeModifier(to theme: EmojiMemoryGame.EmojiMemoryGameTheme, symbol: String) -> some View {
         return VStack {
             Button(action: {
                 emojiMemoryGame.changeTheme(to: theme)
@@ -82,10 +82,10 @@ struct MemoryGameView: View {
                 Image(systemName: symbol)
                     .font(.title2)
             })
-            Text(theme)
+            Text(theme.themeName)
                 .font(.footnote)
         }
-        .foregroundStyle(EmojiMemoryGame.availableThemes[theme]?.0 ?? .purple)
+        .foregroundStyle(theme.accentColor)
     }
 }
 

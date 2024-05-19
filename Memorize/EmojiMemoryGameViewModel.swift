@@ -8,15 +8,48 @@
 import SwiftUI
 
 class EmojiMemoryGame: ObservableObject {
-    private static let halloweenTheme: [String] = ["👻", "🎃", "💀", "🕷️", "👿", "🕸️","🐙", "🐍", "😵", "🙀", "🍬", "🧺"]
-    private static let animalTheme: [String] = ["🐶", "🐭", "🐹", "🐰", "🦊", "🐻", "🐻‍❄️", "🐨", "🦁", "🐮", "🐷", "🐵"]
-    private static let digitalTheme: [String] = ["⌚️", "📱", "💻", "⌨️", "🖥️", "🖨️", "⏰", "🎙️", "📺", "📽️", "📻", "🧭"]
-    static let availableThemes: [String: (Color, [String])] = ["Halloween": (.purple, halloweenTheme), "Animal": (.pink, animalTheme), "Digital": (.blue, digitalTheme)]
+    enum EmojiMemoryGameTheme: CaseIterable {
+        private static let halloweenThemeEmojis: [String] = ["👻", "🎃", "💀", "🕷️", "👿", "🕸️","🐙", "🐍", "😵", "🙀", "🍬", "🧺"]
+        private static let animalThemeEmojis: [String] = ["🐶", "🐭", "🐹", "🐰", "🦊", "🐻", "🐻‍❄️", "🐨", "🦁", "🐮", "🐷", "🐵"]
+        private static let digitalThemeEmojis: [String] = ["⌚️", "📱", "💻", "⌨️", "🖥️", "🖨️", "⏰", "🎙️", "📺", "📽️", "📻", "🧭"]
+        
+        case halloween
+        case animal
+        case digital
+        
+        var accentColor: Color {
+            switch self {
+            case .animal: return .pink
+            case .digital: return .blue
+            case .halloween: return .purple
+            }
+        }
+        
+        var emojis: [String] {
+            switch self {
+            case .animal: return EmojiMemoryGameTheme.animalThemeEmojis
+            case .digital: return EmojiMemoryGameTheme.digitalThemeEmojis
+            case .halloween: return EmojiMemoryGameTheme.halloweenThemeEmojis
+            }
+        }
+        
+        var themeName: String {
+            switch self {
+            case .animal: return "Animal"
+            case .digital: return "Digital"
+            case .halloween: return "Halloween"
+            }
+        }
+    }
+    
+    private static let defaultTheme = EmojiMemoryGameTheme.halloween
+    
+//    static let availableThemes: [String: (Color, [String])] = ["Halloween": (.purple, halloweenTheme), "Animal": (.pink, animalTheme), "Digital": (.blue, digitalTheme)]
         
     @Published private var memoryGame = makeMemoryGame()
     
-    private static func makeMemoryGame(memoryGameTheme theme: String = "Halloween") -> MemoryGame<String> {
-        let themeEmojis = availableThemes[theme]?.1 ?? halloweenTheme
+    private static func makeMemoryGame(memoryGameTheme theme: EmojiMemoryGameTheme = defaultTheme) -> MemoryGame<String> {
+        let themeEmojis = theme.emojis
         
         return MemoryGame(numberOfPairsOfCards: themeEmojis.count) { pairIndex in
             if themeEmojis.indices.contains(pairIndex) {
@@ -27,7 +60,7 @@ class EmojiMemoryGame: ObservableObject {
         }
     }
     
-    var currentColor: Color = .purple
+    var currentColor: Color = defaultTheme.accentColor
     
     var cards: Array<MemoryGame<String>.Card> {
         return memoryGame.cards
@@ -43,8 +76,8 @@ class EmojiMemoryGame: ObservableObject {
         memoryGame.shuffleCards()
     }
     
-    func changeTheme(to theme: String) {
-        let themeEmojis = EmojiMemoryGame.availableThemes[theme]?.1 ?? EmojiMemoryGame.halloweenTheme
+    func changeTheme(to theme: EmojiMemoryGameTheme) {
+        let themeEmojis = theme.emojis
         
         func makeCardContent(pairIndex: Int) -> String {
             if themeEmojis.indices.contains(pairIndex) {
@@ -54,7 +87,7 @@ class EmojiMemoryGame: ObservableObject {
             }
         }
         
-        currentColor = EmojiMemoryGame.availableThemes[theme]?.0 ?? .purple
+        currentColor = theme.accentColor
         memoryGame.changeTheme(numberOfPairsOfCards: themeEmojis.count, cardContentFactory: makeCardContent)
         
         print("Theme changed: \(theme)")
