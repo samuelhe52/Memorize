@@ -32,8 +32,6 @@ struct MemoryGame<CardContent: Equatable> {
     var score: Int = 0
     
     mutating func chooseCard(_ card: Card) {
-//        print("----------------------------------------")
-//        print(theOneAndOnlyFaceUpCardIndex)
         if let chosenCardIndex = cards.firstIndex(where: { $0.id == card.id }) {
             if !cards[chosenCardIndex].isFaceUp && !cards[chosenCardIndex].isMatched {
                 if let potentialMatchIndex = theOneAndOnlyFaceUpCardIndex {
@@ -56,9 +54,6 @@ struct MemoryGame<CardContent: Equatable> {
                 cards[chosenCardIndex].seen = true
             }
         }
-//        print(theOneAndOnlyFaceUpCardIndex)
-//        print("----------------------------------------")
-
     }
     
     mutating func changeTheme(numberOfPairsOfCards number: Int, cardContentFactory: (Int) -> CardContent) {

@@ -9,7 +9,6 @@ import SwiftUI
 
 struct MemoryGameView: View {
     @ObservedObject var emojiMemoryGame: EmojiMemoryGame
-    // Never use a default value, always pass in the ViewModel into View, for if it were given a default value, then the ViewModel could no longer be shared among other Views, which is contrary to our original intention.
         
     var body: some View {
         VStack {
@@ -52,8 +51,6 @@ struct MemoryGameView: View {
             }
         }
         .animation(.spring(duration: 0.4), value: emojiMemoryGame.cards)
-        .animation(.easeInOut, value: emojiMemoryGame.isGameFinished)
-        .animation(.easeInOut, value: emojiMemoryGame.currentTheme)
     }
     
     var barAtBottom: some View {
@@ -64,6 +61,7 @@ struct MemoryGameView: View {
                 .animation(.default, value: emojiMemoryGame.currentColor)
                 .padding(.leading)
         }
+        .background(RoundedRectangle(cornerRadius: 13).scale(1.2).fill(Color(UIColor.systemGray6)))
     }
     
     var newGame: some View {
