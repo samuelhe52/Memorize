@@ -14,19 +14,14 @@ struct MemoryGameView: View {
     var body: some View {
         VStack {
             title
-            Spacer(minLength: 20)
-            cards
-                .foregroundStyle(emojiMemoryGame.currentColor)
-                .animation(.spring(duration: 0.4), value: emojiMemoryGame.cards)
-                .animation(.none, value: emojiMemoryGame.currentTheme)
             Spacer()
-            HStack(alignment: .lastTextBaseline) {
-                themeModifiers
-                Divider().frame(height: 40)
-                newGame
-                    .animation(.default, value: emojiMemoryGame.currentColor)
-                    .padding(.leading)
+            if !emojiMemoryGame.isGameFinished {
+                cards
+                Spacer()
             }
+            score
+            Spacer()
+            barAtBottom
         }
         .padding()
     }
@@ -37,16 +32,37 @@ struct MemoryGameView: View {
             .foregroundStyle(.linearGradient(colors: [.pink, .purple, .blue], startPoint: .topLeading, endPoint: .bottomTrailing))
     }
     
+    var score: some View {
+        Text("Score: \(emojiMemoryGame.getScore())")
+            .foregroundStyle(emojiMemoryGame.currentColor)
+            .font(emojiMemoryGame.isGameFinished ? .largeTitle : .title3)
+            .background(RoundedRectangle(cornerRadius: 8).scale(1.2).fill(Color(UIColor.systemGray5)))
+            .animation(.bouncy, value: emojiMemoryGame.isGameFinished)
+    }
+    
     var cards: some View {
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 80), spacing: 0)], spacing: 0) {
             ForEach(emojiMemoryGame.cards) { card in
-                CardView(card)
-                    .aspectRatio(2/3, contentMode: .fit)
+                CardView(card: card, baseColor: emojiMemoryGame.currentColor)
+                    .aspectRatio(3/4, contentMode: .fit)
                     .padding(4)
                     .onTapGesture {
                         emojiMemoryGame.choose(card)
                     }
             }
+        }
+        .animation(.spring(duration: 0.4), value: emojiMemoryGame.cards)
+        .animation(.easeInOut, value: emojiMemoryGame.isGameFinished)
+        .animation(.easeInOut, value: emojiMemoryGame.currentTheme)
+    }
+    
+    var barAtBottom: some View {
+        HStack(alignment: .lastTextBaseline) {
+            themeModifiers
+            Divider().frame(height: 40)
+            newGame
+                .animation(.default, value: emojiMemoryGame.currentColor)
+                .padding(.leading)
         }
     }
     
@@ -89,10 +105,7 @@ struct MemoryGameView: View {
 
 struct CardView: View {
     let card: MemoryGame<String>.Card
-    
-    init(_ card: MemoryGame<String>.Card) {
-        self.card = card
-    }
+    let baseColor: Color
     
     var body: some View {
         ZStack {
@@ -104,9 +117,31 @@ struct CardView: View {
                 .aspectRatio(4/3, contentMode: .fit)
             base.opacity(card.isFaceUp ? 0 : 1)
         }
+        .foregroundStyle(.linearGradient(stops: baseColor.brightnessGradient.stops, startPoint: .bottomLeading, endPoint: .topTrailing))
         .opacity(card.isMatched ? 0 : 1)
         .animation(.easeInOut(duration: 0.5), value: card.isMatched)
         .animation(.easeInOut(duration: 0.2), value: card.isFaceUp)
+    }
+}
+
+extension Color {
+    var brightnessGradient: Gradient {
+        func getHSB(_ col: Color) -> (CGFloat, CGFloat, CGFloat, CGFloat) {
+            var hue: CGFloat = 0.0
+            var saturation: CGFloat = 0.0
+            var brightness: CGFloat = 0.0
+            var alpha: CGFloat = 0.0
+            
+            let uiColor = UIColor(col)
+            uiColor.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
+            
+            return (hue, saturation, brightness, alpha)
+        }
+        
+        let baseHSB = getHSB(self)
+        let lighter = Color(hue: baseHSB.0, saturation: baseHSB.1, brightness: baseHSB.2 - 0.4, opacity: baseHSB.3)
+        let darker = Color(hue: baseHSB.0, saturation: baseHSB.1, brightness: baseHSB.2 + 0.4, opacity: baseHSB.3)
+        return Gradient(colors: [lighter, self, darker])
     }
 }
 

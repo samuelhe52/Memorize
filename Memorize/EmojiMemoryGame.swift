@@ -19,12 +19,12 @@ class EmojiMemoryGame: ObservableObject {
         private static let themes: [Theme] = [
             Theme(name: "Halloween", emojis: ["👻", "🎃", "💀", "🕷️", "👿", "🕸️","🐙", "🐍", "😵", "🙀", "🍬", "🧺"], accentColor: .purple, symbol: "ant"),
             Theme(name: "Animal", emojis: ["🐶", "🐭", "🐹", "🐰", "🦊", "🐻", "🐻‍❄️", "🐨", "🦁", "🐮", "🐷", "🐵"], accentColor: .pink, symbol: "pawprint"),
-            Theme(name: "Digital", emojis: ["⌚️", "📱", "💻", "⌨️", "🖥️", "🖨️", "⏰", "🎙️", "📺", "📽️", "📻", "🧭"], accentColor: .blue, symbol: "pc"),
+            Theme(name: "Digital", emojis: ["⌚️", "📱", "💻", "⌨️", "🤖", "🖨️", "⏰", "🎙️", "📺", "📽️", "📻", "🧭"], accentColor: .blue, symbol: "pc")
         ]
         
         var id: String { self.rawValue }
-        case halloween
         case animal
+        case halloween
         case digital
         
         var theme: Theme {
@@ -45,7 +45,7 @@ class EmojiMemoryGame: ObservableObject {
     }
 
     
-    private static let defaultTheme = EmojiMemoryGameThemes.digital
+    private static let defaultTheme = EmojiMemoryGameThemes.halloween
     
     private static let defaultCardPairCount = 8
         
@@ -72,6 +72,8 @@ class EmojiMemoryGame: ObservableObject {
         return memoryGame.cards
     }
     
+    var isGameFinished: Bool { cards.allSatisfy { $0.isMatched == true } }
+    
     // MARK: - Intent
     
     func choose(_ card: MemoryGame<String>.Card) {
@@ -80,14 +82,18 @@ class EmojiMemoryGame: ObservableObject {
     
     func startNewGame() {
         memoryGame.startNewGame()
+        memoryGame.score = 0
     }
     
     func changeTheme(to theme: EmojiMemoryGameThemes) {
-        let themeEmojis = theme.emojis
         currentColor = theme.accentColor
         currentTheme = theme
         
         memoryGame = EmojiMemoryGame.createMemoryGame(memoryGameTheme: theme)
         print("Theme changed: \(theme)")
+    }
+    
+    func getScore() -> String {
+        return String(memoryGame.score)
     }
 }
