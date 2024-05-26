@@ -15,16 +15,17 @@ struct MemoryGameView: View {
         VStack {
             title
             Spacer(minLength: 20)
-            ScrollView {
-                cards
-                    .foregroundStyle(emojiMemoryGame.currentColor)
-                    .animation(.spring(duration: 0.4), value: emojiMemoryGame.cards)
-            }
+            cards
+                .foregroundStyle(emojiMemoryGame.currentColor)
+                .animation(.spring(duration: 0.4), value: emojiMemoryGame.cards)
+                .animation(.none, value: emojiMemoryGame.currentTheme)
+            Spacer()
             HStack(alignment: .lastTextBaseline) {
                 themeModifiers
                 Divider().frame(height: 40)
                 newGame
                     .animation(.default, value: emojiMemoryGame.currentColor)
+                    .padding(.leading)
             }
         }
         .padding()
@@ -49,21 +50,6 @@ struct MemoryGameView: View {
         }
     }
     
-    var shuffler: some View {
-        Button(action: {
-            emojiMemoryGame.shuffleCards()
-        }, label: {
-            VStack {
-                Image(systemName: "square.3.stack.3d.middle.fill")
-                    .font(.title2)
-                Text("Shuffle")
-                    .font(.footnote)
-            }
-        })
-        .foregroundStyle(emojiMemoryGame.currentColor)
-        .padding(.leading)
-    }
-    
     var newGame: some View {
         Button(action: {
             emojiMemoryGame.startNewGame()
@@ -78,15 +64,15 @@ struct MemoryGameView: View {
     }
     
     var themeModifiers: some View {
-        HStack(alignment: .lastTextBaseline, spacing: 35) {
-            themeModifier(to: .animal, symbol: "pawprint")
-            themeModifier(to: .halloween, symbol: "ant")
-            themeModifier(to: .digital, symbol: "pc")
+        HStack(alignment: .lastTextBaseline, spacing: 30) {
+            ForEach(EmojiMemoryGame.EmojiMemoryGameThemes.allCases) { theme in
+                themeModifier(to: theme, symbol: theme.symbol)
+            }
         }
         .padding(.trailing)
     }
     
-    func themeModifier(to theme: EmojiMemoryGame.EmojiMemoryGameTheme, symbol: String) -> some View {
+    func themeModifier(to theme: EmojiMemoryGame.EmojiMemoryGameThemes, symbol: String) -> some View {
         return VStack {
             Button(action: {
                 emojiMemoryGame.changeTheme(to: theme)

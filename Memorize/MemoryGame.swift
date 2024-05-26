@@ -53,11 +53,6 @@ struct MemoryGame<CardContent: Equatable> {
 
     }
     
-    mutating func shuffleCards() {
-        cards.shuffle()
-        print("Cards shuffled!")
-    }
-    
     mutating func changeTheme(numberOfPairsOfCards number: Int, cardContentFactory: (Int) -> CardContent) {
         cards = MemoryGame<CardContent>.generateCards(numberOfPairsOfCards: number, cardContentFactory: cardContentFactory)
     }
@@ -85,7 +80,7 @@ struct MemoryGame<CardContent: Equatable> {
     
     struct CardID: Hashable {
         let uuid = UUID()
-        var description: String
+        let description: String
     }
 }
 
