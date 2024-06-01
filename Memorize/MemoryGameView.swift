@@ -14,13 +14,13 @@ struct MemoryGameView: View {
     var body: some View {
         VStack {
             title
-            Spacer()
+            Spacer(minLength: 15)
             if !emojiMemoryGame.isGameFinished {
                 cards
-                Spacer()
+                Spacer(minLength: 20)
             }
             score
-            Spacer()
+            Spacer(minLength: 20)
             barAtBottom
         }
         .padding()
