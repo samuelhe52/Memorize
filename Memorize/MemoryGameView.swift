@@ -9,6 +9,7 @@ import SwiftUI
 
 struct MemoryGameView: View {
     @ObservedObject var emojiMemoryGame: EmojiMemoryGame
+    private let cardAspectRatio: CGFloat = 3/4
         
     var body: some View {
         VStack {
@@ -40,15 +41,12 @@ struct MemoryGameView: View {
     }
     
     var cards: some View {
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 80), spacing: 0)], spacing: 0) {
-            ForEach(emojiMemoryGame.cards) { card in
-                CardView(card: card, baseColor: emojiMemoryGame.currentColor)
-                    .aspectRatio(3/4, contentMode: .fit)
-                    .padding(4)
-                    .onTapGesture {
-                        emojiMemoryGame.choose(card)
-                    }
-            }
+        AspectVGrid(items: emojiMemoryGame.cards, aspectRatio: cardAspectRatio) { card in
+            CardView(card: card, baseColor: emojiMemoryGame.currentColor)
+                .padding(3)
+                .onTapGesture {
+                    emojiMemoryGame.choose(card)
+                }
         }
         .animation(.spring(duration: 0.4), value: emojiMemoryGame.cards)
     }

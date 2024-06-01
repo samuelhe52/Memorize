@@ -65,7 +65,7 @@ class EmojiMemoryGame: ObservableObject {
         currentTheme = theme
         
         memoryGame = EmojiMemoryGame.createMemoryGame(memoryGameTheme: theme)
-        print("Theme changed: \(theme)")
+        print("Theme changed: \(theme.name)")
     }
     
     func getScore() -> String {
