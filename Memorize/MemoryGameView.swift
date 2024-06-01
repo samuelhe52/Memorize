@@ -1,5 +1,5 @@
 //
-//  EmojiMemoryGameView.swift
+//  MemoryGameView.swift
 //  Memorize
 //
 //  Created by Samuel He on 2024/4/27.
