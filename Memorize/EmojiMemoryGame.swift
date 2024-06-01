@@ -8,40 +8,21 @@
 import SwiftUI
 
 class EmojiMemoryGame: ObservableObject {
-    struct Theme {
+    struct MemoryGameTheme: Identifiable {
+        var id: String { name }
+        
         let name: String
         let emojis: [String]
         let accentColor: Color
         let symbol: String
     }
 
-    enum EmojiMemoryGameThemes: String, CaseIterable, Identifiable {
-        private static let themes: [Theme] = [
-            Theme(name: "Halloween", emojis: ["👻", "🎃", "💀", "🕷️", "👿", "🕸️","🐙", "🐍", "😵", "🙀", "🍬", "🧺"], accentColor: .purple, symbol: "ant"),
-            Theme(name: "Animal", emojis: ["🐶", "🐭", "🐹", "🐰", "🦊", "🐻", "🐻‍❄️", "🐨", "🦁", "🐮", "🐷", "🐵"], accentColor: .pink, symbol: "pawprint"),
-            Theme(name: "Digital", emojis: ["⌚️", "📱", "💻", "⌨️", "🤖", "🖨️", "⏰", "🎙️", "📺", "📽️", "📻", "🧭"], accentColor: .blue, symbol: "pc")
-        ]
-        
-        var id: String { self.rawValue }
-        case animal
-        case halloween
-        case digital
-        
-        var theme: Theme {
-            switch self {
-            case .halloween: return EmojiMemoryGame.EmojiMemoryGameThemes.themes[0]
-            case .animal: return EmojiMemoryGameThemes.themes[1]
-            case .digital: return EmojiMemoryGameThemes.themes[2]
-            }
-        }
-        
-        var accentColor: Color { return theme.accentColor }
-        
-        var emojis: [String] { return theme.emojis }
-        
-        var themeName: String { return theme.name }
-        
-        var symbol: String { return theme.symbol }
+    struct EmojiMemoryGameThemes {
+        static let halloween = MemoryGameTheme(name: "Halloween", emojis: ["👻", "🎃", "💀", "🕷️", "👿", "🕸️","🐙", "🐍", "😵", "🙀", "🍬", "🧺"], accentColor: .purple, symbol: "ant")
+        static let animal = MemoryGameTheme(name: "Animal", emojis: ["🐶", "🐭", "🐹", "🐰", "🦊", "🐻", "🐻‍❄️", "🐨", "🦁", "🐮", "🐷", "🐵"], accentColor: .pink, symbol: "pawprint")
+        static let digital = MemoryGameTheme(name: "Digital", emojis: ["⌚️", "📱", "💻", "⌨️", "🤖", "🖨️", "⏰", "🎙️", "📺", "📽️", "📻", "🧭"], accentColor: .blue, symbol: "pc")
+
+        static let allCases: [MemoryGameTheme] = [EmojiMemoryGameThemes.animal, EmojiMemoryGameThemes.halloween, EmojiMemoryGameThemes.digital]
     }
 
     
@@ -49,7 +30,7 @@ class EmojiMemoryGame: ObservableObject {
     
     private static let defaultCardPairCount = 8
         
-    private static func createMemoryGame(memoryGameTheme theme: EmojiMemoryGameThemes = defaultTheme) -> MemoryGame<String> {
+    private static func createMemoryGame(memoryGameTheme theme: MemoryGameTheme = defaultTheme) -> MemoryGame<String> {
         let themeEmojis = theme.emojis
         
 //        return MemoryGame(numberOfPairsOfCards: themeEmojis.count) { pairIndex in
@@ -66,7 +47,7 @@ class EmojiMemoryGame: ObservableObject {
     
     var currentColor: Color = defaultTheme.accentColor
     
-    var currentTheme: EmojiMemoryGameThemes = defaultTheme
+    var currentTheme: MemoryGameTheme = defaultTheme
     
     var cards: Array<MemoryGame<String>.Card> {
         return memoryGame.cards
@@ -85,7 +66,7 @@ class EmojiMemoryGame: ObservableObject {
         memoryGame.score = 0
     }
     
-    func changeTheme(to theme: EmojiMemoryGameThemes) {
+    func changeTheme(to theme: MemoryGameTheme) {
         currentColor = theme.accentColor
         currentTheme = theme
         

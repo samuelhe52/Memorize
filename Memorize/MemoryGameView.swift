@@ -86,7 +86,7 @@ struct MemoryGameView: View {
         .padding(.trailing)
     }
     
-    func themeModifier(to theme: EmojiMemoryGame.EmojiMemoryGameThemes, symbol: String) -> some View {
+    func themeModifier(to theme: EmojiMemoryGame.MemoryGameTheme, symbol: String) -> some View {
         return VStack {
             Button(action: {
                 emojiMemoryGame.changeTheme(to: theme)
@@ -94,7 +94,7 @@ struct MemoryGameView: View {
                 Image(systemName: symbol)
                     .font(.title2)
             })
-            Text(theme.themeName)
+            Text(theme.name)
                 .font(.footnote)
         }
         .foregroundStyle(theme.accentColor)
