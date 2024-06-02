@@ -30,11 +30,10 @@ class EmojiMemoryGame: ObservableObject {
     
     private static let defaultCardPairCount = 8
         
-    private static func createMemoryGame(memoryGameTheme theme: MemoryGameTheme = defaultTheme) -> MemoryGame<String> {
+    private static func createMemoryGame(memoryGameTheme theme: MemoryGameTheme = defaultTheme, cardPairCount: Int = defaultCardPairCount) -> MemoryGame<String> {
         let themeEmojis = theme.emojis.shuffled()
         
-//        return MemoryGame(numberOfPairsOfCards: themeEmojis.count) { pairIndex in
-        return MemoryGame(numberOfPairsOfCards: min(defaultCardPairCount, themeEmojis.count)) { themeEmojis[$0] }
+        return MemoryGame(numberOfPairsOfCards: min(cardPairCount, themeEmojis.count)) { themeEmojis[$0] }
     }
     
     @Published private var memoryGame = createMemoryGame()

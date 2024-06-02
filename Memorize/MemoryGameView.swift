@@ -41,7 +41,7 @@ struct MemoryGameView: View {
     }
     
     var cards: some View {
-        AspectVGrid(items: emojiMemoryGame.cards, aspectRatio: cardAspectRatio) { card in
+        AspectVGrid(items: emojiMemoryGame.cards, aspectRatio: cardAspectRatio, allRowsFilled: true) { card in
             CardView(card: card, baseColor: emojiMemoryGame.currentColor)
                 .padding(3)
                 .onTapGesture {
