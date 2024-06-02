@@ -14,21 +14,21 @@ struct AspectVGrid<Item: Identifiable, ItemView: View>: View {
     
     var body: some View {
         GeometryReader { geometry in
-            let gridItemSize = gridItemWidthThatFits(
-                cardCount: items.count,
+            let gridItemWidth = gridItemWidthThatFits(
+                itemCount: items.count,
                 size: geometry.size,
                 atAspectRatio: aspectRatio)
-            LazyVGrid(columns: [GridItem(.adaptive(minimum: gridItemSize), spacing: 0)], spacing: 0) {
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: gridItemWidth), spacing: 0)], spacing: 0) {
                 ForEach(items) { item in
                     contentBuilder(item)
-                        .aspectRatio(3/4, contentMode: .fit)
+                        .aspectRatio(aspectRatio, contentMode: .fit)
                 }
             }
         }
     }
     
     func gridItemWidthThatFits(
-        cardCount: Int,
+        itemCount: Int,
         size: CGSize,
         atAspectRatio aspectRatio: CGFloat
     ) -> CGFloat {
@@ -37,13 +37,13 @@ struct AspectVGrid<Item: Identifiable, ItemView: View>: View {
             let width = size.width / columnCount
             let height = width / aspectRatio
             
-            let rowCount = (CGFloat(cardCount) / CGFloat(columnCount)).rounded(.up)
+            let rowCount = (CGFloat(itemCount) / CGFloat(columnCount)).rounded(.up)
             if CGFloat(rowCount * height) < size.height {
                 return (size.width / CGFloat(columnCount)).rounded(.down)
             } else {
                 columnCount += 1
             }
-        } while columnCount < CGFloat(cardCount)
+        } while columnCount < CGFloat(itemCount)
         return min(size.width / CGFloat(columnCount), size.height * aspectRatio).rounded(.down)
     }
 }
