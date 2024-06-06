@@ -79,6 +79,7 @@ struct MemoryGame<CardContent: Equatable> {
         mutating func resetCardState() {
             self.isFaceUp = false
             self.isMatched = false
+            self.seen = false
         }
     }
     
