@@ -41,13 +41,17 @@ struct MemoryGame<CardContent: Equatable> {
                         score += 2
                         print("Matched: \"\(cards[chosenCardIndex])\" and \"\(cards[potentialMatchIndex])\"")
                     } else {
-                        print(cards[chosenCardIndex].seen)
+                        print("Seen: \(cards[chosenCardIndex].seen)")
                         if cards[chosenCardIndex].seen == true {
                             score -= 1
                         }
                         print("Match failed: \"\(cards[chosenCardIndex])\" and \"\(cards[potentialMatchIndex])\"")
                     }
                 } else {
+                    print("Seen: \(cards[chosenCardIndex].seen)")
+                    if cards[chosenCardIndex].seen == true {
+                        score -= 1
+                    }
                     theOneAndOnlyFaceUpCardIndex = chosenCardIndex
                 }
                 cards[chosenCardIndex].isFaceUp = true
