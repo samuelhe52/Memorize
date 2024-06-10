@@ -17,11 +17,15 @@ struct CardView: View {
         ZStack {
             let base = RoundedRectangle(cornerRadius: 15)
             base.strokeBorder(lineWidth: 3)
-            Text(card.content)
-                .font(.system(size: 200))
-                .minimumScaleFactor(0.1)
-                .multilineTextAlignment(.center)
-                .aspectRatio(4/3, contentMode: .fit)
+            Pie(endAngle: .degrees(150))
+                .opacity(0.4)
+                .overlay(
+                    Text(card.content)
+                        .font(.system(size: 200))
+                        .minimumScaleFactor(0.1)
+                        .multilineTextAlignment(.center)
+                        .aspectRatio(4/3, contentMode: .fit)
+                )
                 .padding(5)
             base.opacity(card.isFaceUp ? 0 : 1)
         }
@@ -38,7 +42,7 @@ struct CardView: View {
     
     return VStack {
         HStack {
-            CardView(card: Card(isFaceUp: true, content: "X", id: CardID(description: "test1")), baseColor: .blue)
+            CardView(card: Card(isFaceUp: true, content: "👻", id: CardID(description: "test1")), baseColor: .blue)
             CardView(card: Card(content: "X", id: CardID(description: "test1")), baseColor: .blue)
         }
         HStack {
