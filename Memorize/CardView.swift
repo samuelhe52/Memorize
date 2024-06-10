@@ -14,25 +14,21 @@ struct CardView: View {
     let baseColor: Color
     
     var body: some View {
-        ZStack {
-            let base = RoundedRectangle(cornerRadius: 15)
-            base.strokeBorder(lineWidth: 3)
-            Pie(endAngle: .degrees(150))
-                .opacity(0.4)
-                .overlay(
-                    Text(card.content)
-                        .font(.system(size: 200))
-                        .minimumScaleFactor(0.1)
-                        .multilineTextAlignment(.center)
-                        .aspectRatio(4/3, contentMode: .fit)
-                )
-                .padding(5)
-            base.opacity(card.isFaceUp ? 0 : 1)
-        }
-        .foregroundStyle(.linearGradient(stops: baseColor.brightnessGradient.stops, startPoint: .bottomLeading, endPoint: .topTrailing))
-        .opacity(card.isMatched ? 0 : 1)
-        .animation(.easeInOut(duration: 0.5), value: card.isMatched)
-        .animation(.easeInOut(duration: 0.2), value: card.isFaceUp)
+        Pie(endAngle: .degrees(150))
+            .opacity(0.4)
+            .overlay(
+                Text(card.content)
+                    .font(.system(size: 200))
+                    .minimumScaleFactor(0.1)
+                    .multilineTextAlignment(.center)
+                    .aspectRatio(4/3, contentMode: .fit)
+            )
+            .padding(5)
+            .cardify(isFaceUp: card.isFaceUp)
+            .foregroundStyle(.linearGradient(stops: baseColor.brightnessGradient.stops, startPoint: .bottomLeading, endPoint: .topTrailing))
+            .opacity(card.isMatched ? 0 : 1)
+            .animation(.easeInOut(duration: 0.5), value: card.isMatched)
+            .animation(.easeInOut(duration: 0.2), value: card.isFaceUp)
     }
 }
 

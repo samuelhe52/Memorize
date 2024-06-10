@@ -19,6 +19,7 @@
 		9F7BC7172C16AB5300285F18 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7BC7162C16AB5300285F18 /* CardView.swift */; };
 		9F7BC7192C16AB8700285F18 /* BrightnessGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7BC7182C16AB8700285F18 /* BrightnessGradient.swift */; };
 		9F7BC71B2C16B8EB00285F18 /* Pie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7BC71A2C16B8EB00285F18 /* Pie.swift */; };
+		9F7BC71F2C16D02F00285F18 /* Cardify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7BC71E2C16D02F00285F18 /* Cardify.swift */; };
 		9FE289632C0B88E400FF04F9 /* AspectVGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F80F5AF2C0B822E0071C4AC /* AspectVGrid.swift */; };
 /* End PBXBuildFile section */
 
@@ -56,6 +57,7 @@
 		9F7BC7162C16AB5300285F18 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		9F7BC7182C16AB8700285F18 /* BrightnessGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrightnessGradient.swift; sourceTree = "<group>"; };
 		9F7BC71A2C16B8EB00285F18 /* Pie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pie.swift; sourceTree = "<group>"; };
+		9F7BC71E2C16D02F00285F18 /* Cardify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cardify.swift; sourceTree = "<group>"; };
 		9F80F5AF2C0B822E0071C4AC /* AspectVGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AspectVGrid.swift; path = Memorize/AspectVGrid.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -112,6 +114,7 @@
 				9F0F7BBC2BDCC520006C6220 /* MemoryGameView.swift */,
 				9F7BC7182C16AB8700285F18 /* BrightnessGradient.swift */,
 				9F7BC7162C16AB5300285F18 /* CardView.swift */,
+				9F7BC71E2C16D02F00285F18 /* Cardify.swift */,
 				9F7BC71A2C16B8EB00285F18 /* Pie.swift */,
 				9F6E256B2BE3DEC300DB890D /* MemoryGame.swift */,
 				9F6E256D2BE3E06500DB890D /* EmojiMemoryGame.swift */,
@@ -280,6 +283,7 @@
 				9F7BC7192C16AB8700285F18 /* BrightnessGradient.swift in Sources */,
 				9F6E256E2BE3E06500DB890D /* EmojiMemoryGame.swift in Sources */,
 				9F0F7BBD2BDCC520006C6220 /* MemoryGameView.swift in Sources */,
+				9F7BC71F2C16D02F00285F18 /* Cardify.swift in Sources */,
 				9F0F7BBB2BDCC520006C6220 /* MemorizeApp.swift in Sources */,
 				9FE289632C0B88E400FF04F9 /* AspectVGrid.swift in Sources */,
 				9F7BC71B2C16B8EB00285F18 /* Pie.swift in Sources */,
