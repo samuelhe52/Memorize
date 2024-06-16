@@ -27,3 +27,7 @@ extension Color {
         return Gradient(colors: [lighter, self, darker])
     }
 }
+
+#Preview("Brightness Gradient") {
+    RoundedRectangle(cornerRadius: 20).fill(.linearGradient(Color.blue.brightnessGradient, startPoint: .bottomLeading, endPoint: .topTrailing)).frame(width: 300, height: 400)
+}
