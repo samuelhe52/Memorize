@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// Makes any View looks like a "Card".
 struct Cardify: ViewModifier {
     let isFaceUp: Bool
     

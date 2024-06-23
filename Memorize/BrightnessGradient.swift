@@ -8,6 +8,8 @@
 import SwiftUI
 
 extension Color {
+    /// Returns a `Gradient` with the lighter
+    /// and the darker versions of the base color as its stops.
     var brightnessGradient: Gradient {
         func getHSB(_ col: Color) -> (CGFloat, CGFloat, CGFloat, CGFloat) {
             var hue: CGFloat = 0.0

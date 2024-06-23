@@ -8,6 +8,7 @@
 import SwiftUI
 import CoreGraphics
 
+/// A pie shape with a specified `startAngle` and `endAngle`.
 struct Pie: Shape {
     var startAngle: Angle = .degrees(-90)
     var endAngle: Angle

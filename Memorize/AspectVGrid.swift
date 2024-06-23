@@ -30,6 +30,8 @@ struct AspectVGrid<Item: Identifiable, ItemView: View>: View {
         }
     }
     
+    /// Finds the appropriate grid item width that best fits in a given size
+    /// and returns it.
     func gridItemWidthThatFits(
         itemCount: Int,
         size: CGSize,
