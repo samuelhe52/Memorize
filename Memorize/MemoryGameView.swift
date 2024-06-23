@@ -78,18 +78,23 @@ struct MemoryGameView: View {
     var themeModifiers: some View {
         HStack(alignment: .lastTextBaseline, spacing: 30) {
             ForEach(EmojiMemoryGame.EmojiMemoryGameThemes.allCases) { theme in
-                themeModifier(to: theme, symbol: theme.symbol)
+                makeThemeModifier(to: theme, systemSymbol: theme.symbol)
             }
         }
         .padding(.trailing)
     }
     
-    func themeModifier(to theme: EmojiMemoryGame.MemoryGameTheme, symbol: String) -> some View {
+    /// Creates a theme modifier view and returns it.
+    /// - parameter theme: the modifier's linked theme.
+    /// - parameter systemSymbol: the symbol to display for the modifier.
+    func makeThemeModifier(
+        to theme: EmojiMemoryGame.MemoryGameTheme,
+        systemSymbol: String) -> some View {
         return VStack {
             Button(action: {
                 emojiMemoryGame.changeTheme(to: theme)
             }, label: {
-                Image(systemName: symbol)
+                Image(systemName: systemSymbol)
                     .font(.title2)
             })
             Text(theme.name)
