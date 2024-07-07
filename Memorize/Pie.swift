@@ -12,7 +12,7 @@ import CoreGraphics
 struct Pie: Shape {
     var startAngle: Angle = .degrees(-90)
     var endAngle: Angle
-    let clockwise: Bool = true
+    var clockwise: Bool = true
     // !!! "clockwise" refers to positive y axis to positive x axis.
     
     func path(in rect: CGRect) -> Path {
@@ -35,4 +35,10 @@ struct Pie: Shape {
         p.addLine(to: center)
         return p
     }
+}
+
+#Preview {
+    Pie(startAngle: .degrees(0), endAngle: .degrees(120))
+        .fill(.orange)
+        .padding()
 }
