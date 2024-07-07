@@ -24,12 +24,12 @@ extension Color {
         }
         
         let baseHSB = getHSB(self)
-        let lighter = Color(hue: baseHSB.0, saturation: baseHSB.1, brightness: baseHSB.2 - 0.4, opacity: baseHSB.3)
-        let darker = Color(hue: baseHSB.0, saturation: baseHSB.1, brightness: baseHSB.2 + 0.4, opacity: baseHSB.3)
+        let lighter = Color(hue: baseHSB.0, saturation: baseHSB.1, brightness: baseHSB.2 + 0.4, opacity: baseHSB.3)
+        let darker = Color(hue: baseHSB.0, saturation: baseHSB.1, brightness: baseHSB.2 - 0.4, opacity: baseHSB.3)
         return Gradient(colors: [lighter, self, darker])
     }
 }
 
 #Preview("Brightness Gradient") {
-    RoundedRectangle(cornerRadius: 20).fill(.linearGradient(Color.blue.brightnessGradient, startPoint: .bottomLeading, endPoint: .topTrailing)).frame(width: 300, height: 400)
+    RoundedRectangle(cornerRadius: 20).fill(.linearGradient(Color.blue.brightnessGradient, startPoint: .topTrailing, endPoint: .bottomLeading)).frame(width: 300, height: 400)
 }
