@@ -47,8 +47,12 @@ class EmojiMemoryGame: ObservableObject {
         return memoryGame.cards
     }
     
+    // The first line for production builds and the second for debugging
+    #if DEBUG
+    var isGameFinished: Bool { finishedForDebugging || cards.allSatisfy { $0.isMatched == true } }
+    #else
     var isGameFinished: Bool { cards.allSatisfy { $0.isMatched == true } }
-    
+    #endif
     // MARK: - Intent
     
     func choose(_ card: Card) {
@@ -68,7 +72,10 @@ class EmojiMemoryGame: ObservableObject {
         print("Theme changed: \(theme.name)")
     }
     
+    // MARK: - Only for debugging and testing
     func getScore() -> String {
         return String(memoryGame.score)
     }
+    
+    @Published var finishedForDebugging: Bool = false
 }
