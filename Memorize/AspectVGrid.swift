@@ -7,11 +7,11 @@
 
 import SwiftUI
 
-struct AspectVGrid<Item: Identifiable, ItemView: View>: View {
-    var items: [Item]
+struct AspectVGrid<Items: RandomAccessCollection, ItemView: View>: View where Items.Element: Identifiable{
+    var items: Items
     var aspectRatio: CGFloat = 1
     var allRowsFilled: Bool = false
-    @ViewBuilder var contentBuilder: (Item) -> ItemView
+    @ViewBuilder var contentBuilder: (Items.Element) -> ItemView
     
     var body: some View {
         GeometryReader { geometry in
