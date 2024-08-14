@@ -27,8 +27,6 @@ struct CardView: View {
             .cardify(isFaceUp: card.isFaceUp)
             .foregroundStyle(.linearGradient(baseColor.brightnessGradient, startPoint: .topTrailing, endPoint: .bottomLeading))
             .opacity(card.isMatched ? 0 : 1)
-            .animation(.easeInOut(duration: 0.5), value: card.isMatched)
-            .animation(.easeInOut(duration: 0.2), value: card.isFaceUp)
     }
 }
 

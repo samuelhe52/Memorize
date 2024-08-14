@@ -27,7 +27,7 @@ class EmojiMemoryGame: ObservableObject {
     private static let defaultTheme = EmojiMemoryGameThemes.halloween
     private static let defaultCardPairCount = 8
     private static func createMemoryGame(memoryGameTheme theme: MemoryGameTheme = defaultTheme, cardPairCount: Int = defaultCardPairCount) -> MemoryGame<String> {
-        let themeEmojis = theme.emojis.shuffled()
+        let themeEmojis = theme.emojis
         
         return MemoryGame(numberOfPairsOfCards: min(cardPairCount, themeEmojis.count)) { themeEmojis[$0] }
     }
@@ -50,7 +50,6 @@ class EmojiMemoryGame: ObservableObject {
     
     func startNewGame() {
         memoryGame.startNewGame()
-        memoryGame.score = 0
     }
     
     func changeTheme(to theme: MemoryGameTheme) {

@@ -8,8 +8,18 @@
 import SwiftUI
 
 /// Makes any View looks like a "Card".
-struct Cardify: ViewModifier {
-    let isFaceUp: Bool
+struct Cardify: ViewModifier, Animatable {
+    init(isFaceUp: Bool) {
+        self.rotation = isFaceUp ? .zero : .degrees(180)
+    }
+    
+    var isFaceUp: Bool { rotation < .degrees(90) }
+    
+    var rotation: Angle
+    var animatableData: Double {
+        get { rotation.degrees }
+        set { rotation = .degrees(newValue) }
+    }
     
     func body(content: Content) -> some View {
         ZStack {
@@ -18,6 +28,10 @@ struct Cardify: ViewModifier {
                 .overlay(content)
             base.opacity(isFaceUp ? 0 : 1)
         }
+        .rotation3DEffect(
+            rotation,
+            axis: (x: 0, y: 1, z: 0)
+        )
     }
 }
 

@@ -36,8 +36,11 @@ struct MemoryGameView: View {
         Text("Score: \(emojiMemoryGame.score)")
             .foregroundStyle(emojiMemoryGame.currentColor)
             .font(emojiMemoryGame.isGameFinished ? .largeTitle : .title3)
-            .background(RoundedRectangle(cornerRadius: 8).scale(1.2).fill(Color(UIColor.systemGray5)))
-            .animation(.bouncy, value: emojiMemoryGame.isGameFinished)
+            .background(
+                RoundedRectangle(cornerRadius: 8)
+                    .scale(1.2)
+                    .fill(Color(UIColor.systemGray5))
+            )
     }
     
     var cards: some View {
@@ -45,10 +48,11 @@ struct MemoryGameView: View {
             CardView(card: card, baseColor: emojiMemoryGame.currentColor)
                 .padding(3)
                 .onTapGesture {
-                    emojiMemoryGame.choose(card)
+                    withAnimation(.easeInOut(duration: 0.5)) {
+                        emojiMemoryGame.choose(card)
+                    }
                 }
         }
-        .animation(.spring(duration: 0.4), value: emojiMemoryGame.cards)
     }
     
     var barAtBottom: some View {
@@ -56,7 +60,6 @@ struct MemoryGameView: View {
             themeModifiers
             Divider().frame(height: 40)
             newGame
-                .animation(.default, value: emojiMemoryGame.currentColor)
                 .padding(.leading)
         }
         .background(RoundedRectangle(cornerRadius: 13).scale(1.2).fill(Color(UIColor.systemGray6)))
@@ -64,7 +67,9 @@ struct MemoryGameView: View {
     
     var newGame: some View {
         Button(action: {
-            emojiMemoryGame.startNewGame()
+            withAnimation(.spring(duration: 0.4)) {
+                emojiMemoryGame.startNewGame()
+            }
         }, label: {
             VStack {
                 Image(systemName: "plus.circle")
@@ -87,12 +92,14 @@ struct MemoryGameView: View {
     /// Creates a theme modifier view and returns it.
     /// - parameter theme: the modifier's linked theme.
     /// - parameter systemSymbol: the symbol to display for the modifier.
-    func makeThemeModifier(
+    private func makeThemeModifier(
         to theme: EmojiMemoryGame.MemoryGameTheme,
         systemSymbol: String) -> some View {
         return VStack {
             Button(action: {
-                emojiMemoryGame.changeTheme(to: theme)
+                withAnimation {
+                    emojiMemoryGame.changeTheme(to: theme)
+                }
             }, label: {
                 Image(systemName: systemSymbol)
                     .font(.title2)
