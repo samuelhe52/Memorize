@@ -70,11 +70,7 @@ struct MemoryGame<CardContent: Equatable> {
     }
     
     struct Card: Equatable, Identifiable, CustomDebugStringConvertible {
-        #if DEBUG
-        var isFaceUp = true
-        #else
-        var isFaceUp = false
-        #endif
+        var isFaceUp: Bool = false
         var isMatched = false
         let content: CardContent
         var seen: Bool = false

@@ -19,11 +19,6 @@ struct MemoryGameView: View {
                 cards
                 Spacer(minLength: 20)
             }
-            #if DEBUG
-            Button(action: { toggleFinishedStatus() }, label: {
-                Text("Debug: on and off screen")
-            })
-            #endif
             score
             Spacer(minLength: 20)
             barAtBottom
@@ -38,7 +33,7 @@ struct MemoryGameView: View {
     }
     
     var score: some View {
-        Text("Score: \(emojiMemoryGame.getScore())")
+        Text("Score: \(emojiMemoryGame.score)")
             .foregroundStyle(emojiMemoryGame.currentColor)
             .font(emojiMemoryGame.isGameFinished ? .largeTitle : .title3)
             .background(RoundedRectangle(cornerRadius: 8).scale(1.2).fill(Color(UIColor.systemGray5)))
@@ -106,13 +101,6 @@ struct MemoryGameView: View {
                 .font(.footnote)
         }
         .foregroundStyle(theme.accentColor)
-    }
-}
-
-// MARK: - Only for debugging and testing
-extension MemoryGameView {
-    func toggleFinishedStatus() {
-        emojiMemoryGame.finishedForDebugging.toggle()
     }
 }
 
