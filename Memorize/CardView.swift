@@ -14,16 +14,18 @@ struct CardView: View {
     let baseColor: Color
     
     var body: some View {
-        if !card.isMatched {
-            Pie(endAngle: .degrees(150))
-                .opacity(0.4)
-                .overlay(cardContent)
-                .padding(5)
-                .cardify(isFaceUp: card.isFaceUp)
-                .foregroundStyle(.linearGradient(baseColor.brightnessGradient, startPoint: .topTrailing, endPoint: .bottomLeading))
-                .transition(.scale)
-        } else {
-            Color.clear
+        TimelineView(.animation) { context in
+            if !card.isMatched {
+                Pie(endAngle: .degrees(card.bonusPercentRemaining * 360 - 90))
+                    .opacity(0.4)
+                    .overlay(cardContent)
+                    .padding(5)
+                    .cardify(isFaceUp: card.isFaceUp)
+                    .foregroundStyle(.linearGradient(baseColor.brightnessGradient, startPoint: .topTrailing, endPoint: .bottomLeading))
+                    .transition(.scale)
+            } else {
+                Color.clear
+            }
         }
     }
     
