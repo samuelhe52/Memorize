@@ -14,25 +14,31 @@ struct CardView: View {
     let baseColor: Color
     
     var body: some View {
-        Pie(endAngle: .degrees(150))
-            .opacity(0.4)
-            .overlay(
-                Text(card.content)
-                    .font(.system(size: 200))
-                    .minimumScaleFactor(0.1)
-                    .multilineTextAlignment(.center)
-                    .aspectRatio(4/3, contentMode: .fit)
-            )
-            .padding(5)
-            .cardify(isFaceUp: card.isFaceUp)
-            .foregroundStyle(.linearGradient(baseColor.brightnessGradient, startPoint: .topTrailing, endPoint: .bottomLeading))
-            .opacity(card.isMatched ? 0 : 1)
+        if !card.isMatched {
+            Pie(endAngle: .degrees(150))
+                .opacity(0.4)
+                .overlay(cardContent)
+                .padding(5)
+                .cardify(isFaceUp: card.isFaceUp)
+                .foregroundStyle(.linearGradient(baseColor.brightnessGradient, startPoint: .topTrailing, endPoint: .bottomLeading))
+                .transition(.scale)
+        } else {
+            Color.clear
+        }
+    }
+    
+    var cardContent: some View {
+        Text(card.content)
+            .font(.system(size: 200))
+            .minimumScaleFactor(0.1)
+            .multilineTextAlignment(.center)
+            .aspectRatio(4/3, contentMode: .fit)
     }
 }
 
 #Preview {
     typealias Card = MemoryGame<String>.Card
-    typealias CardID = MemoryGame<String>.CardID
+    typealias CardID = Card.ID
     
     return VStack {
         HStack {

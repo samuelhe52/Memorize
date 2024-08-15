@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct MemoryGameView: View {
+    typealias Card = MemoryGame<String>.Card
     @ObservedObject var emojiMemoryGame: EmojiMemoryGame
     private let cardAspectRatio: CGFloat = 3/4
         
@@ -47,11 +48,20 @@ struct MemoryGameView: View {
         AspectVGrid(items: emojiMemoryGame.cards, aspectRatio: cardAspectRatio, allRowsFilled: true) { card in
             CardView(card: card, baseColor: emojiMemoryGame.currentColor)
                 .padding(3)
+                .overlay(FlyingNumber(number: scoreChange(causedBy: card)))
+                .zIndex(lastScoreChange.causedByCardID == card.id ? 100 : 0)
                 .onTapGesture {
-                    withAnimation(.easeInOut(duration: 0.5)) {
-                        emojiMemoryGame.choose(card)
-                    }
+                    choose(card)
                 }
+        }
+    }
+    
+    private func choose(_ card: Card) {
+        withAnimation(.easeInOut(duration: 0.4)) {
+            let scoreBeforeChoosing = emojiMemoryGame.score
+            emojiMemoryGame.choose(card)
+            let scoreChange = emojiMemoryGame.score - scoreBeforeChoosing
+            lastScoreChange = (scoreChange, card.id)
         }
     }
     
@@ -108,6 +118,13 @@ struct MemoryGameView: View {
                 .font(.footnote)
         }
         .foregroundStyle(theme.accentColor)
+    }
+    
+    @State private var lastScoreChange = (0, causedByCardID: Card.ID(description: ""))
+    
+    private func scoreChange(causedBy card: Card) -> Int {
+        let (amount, causedByCardID: id) = lastScoreChange
+        return card.id == id ? amount : 0
     }
 }
 
