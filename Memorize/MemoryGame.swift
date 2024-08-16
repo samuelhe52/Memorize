@@ -84,8 +84,9 @@ struct MemoryGame<CardContent: Equatable & CustomStringConvertible> {
         let content: CardContent
         var seen: Bool = false
         
-        struct CardID: Hashable {
+        struct CardID: Hashable, CustomDebugStringConvertible {
             let description: String
+            var debugDescription: String { description }
         }
         
         var id: CardID
