@@ -12,16 +12,23 @@ struct CardView: View {
 
     let card: Card
     let baseColor: Color
+    let backgroundGradient: Gradient
+    
+    init(card: Card, baseColor: Color) {
+        self.card = card
+        self.baseColor = baseColor
+        self.backgroundGradient = baseColor.brightnessGradient
+    }
     
     var body: some View {
-        TimelineView(.animation) { context in
+        TimelineView(.animation(minimumInterval: 1/10)) { context in
             if !card.isMatched {
                 Pie(endAngle: .degrees(card.bonusPercentRemaining * 360 - 90))
                     .opacity(0.4)
                     .overlay(cardContent)
                     .padding(5)
                     .cardify(isFaceUp: card.isFaceUp)
-                    .foregroundStyle(.linearGradient(baseColor.brightnessGradient, startPoint: .topTrailing, endPoint: .bottomLeading))
+                    .foregroundStyle(.linearGradient(backgroundGradient, startPoint: .topTrailing, endPoint: .bottomLeading))
                     .transition(.scale)
             } else {
                 Color.clear

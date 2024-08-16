@@ -107,7 +107,7 @@ struct MemoryGameView: View {
         systemSymbol: String) -> some View {
         return VStack {
             Button(action: {
-                withAnimation(.spring(duration: 0.4)) {
+                withAnimation(.easeInOut(duration: 0.4)) {
                     emojiMemoryGame.changeTheme(to: theme)
                 }
             }, label: {
