@@ -7,14 +7,14 @@
 
 import Foundation
 
-struct MemoryGame<CardContent: Equatable> {
+struct MemoryGame<CardContent: Equatable & CustomStringConvertible> {
     private(set) var cards: [Card]
     private static func generateCards(numberOfPairsOfCards: Int, cardContentFactory: (Int) -> CardContent) -> [Card] {
         var tmpCards: [Card] = []
         for pairIndex in 0..<max(2, numberOfPairsOfCards) {
             let content = cardContentFactory(pairIndex)
-            tmpCards.append(Card(content: content, id: Card.ID(description: "\(pairIndex + 1)a")))
-            tmpCards.append(Card(content: content, id: Card.ID(description: "\(pairIndex + 1)b")))
+            tmpCards.append(Card(content: content, id: Card.ID(description: "\(content.description):\(pairIndex + 1)a")))
+            tmpCards.append(Card(content: content, id: Card.ID(description: "\(content.description):\(pairIndex + 1)b")))
         }
         
         return tmpCards.shuffled()
@@ -57,16 +57,6 @@ struct MemoryGame<CardContent: Equatable> {
                 cards[chosenCardIndex].isFaceUp = true
             }
         }
-    }
-    
-    mutating func changeTheme(numberOfPairsOfCards number: Int, cardContentFactory: (Int) -> CardContent) {
-        cards = MemoryGame<CardContent>.generateCards(numberOfPairsOfCards: number, cardContentFactory: cardContentFactory)
-    }
-    
-    mutating func startNewGame() {
-        cards.indices.forEach { cards[$0].resetCardState() }
-        score = 0
-        cards.shuffle()
     }
     
     struct Card: Equatable, Identifiable, CustomDebugStringConvertible {
