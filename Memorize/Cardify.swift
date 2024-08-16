@@ -25,8 +25,11 @@ struct Cardify: ViewModifier, Animatable {
         ZStack {
             let base = RoundedRectangle(cornerRadius: 15)
             base.strokeBorder(lineWidth: 3)
+                .background(base.fill(.background))
                 .overlay(content)
-            base.opacity(isFaceUp ? 0 : 1)
+                .opacity(isFaceUp ? 1 : 0)
+            base.fill()
+                .opacity(isFaceUp ? 0 : 1)
         }
         .rotation3DEffect(
             rotation,
